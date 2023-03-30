@@ -1,0 +1,80 @@
+﻿@using GoogleCalendarAPIIntegration.Models;
+@using System.Globalization;
+@model List<Event>
+
+<div toast-container position-fixed style="
+     bottom: 0;
+     right: 0;
+     position: fixed;width: 350px;
+     height: 80px;">
+    <div class="toast">
+        <div class="toast-body" style="font-size:1rem; color:aliceblue">
+            Event has been deleted.
+        </div>
+    </div>
+</div>
+@if (Model.Count != 0)
+{
+    <form action="@Url.Action("Search", "CalendarEvent")" method="get" class="form-inline">
+        <div class="form-group">
+            <label for="searchTerm">Search:</label>
+            <input type="text" name="searchTerm" class="form-control ml-2" id="searchTerm">
+        </div>
+        <button type="submit" class="btn btn-primary ml-2">Submit</button>
+    </form>
+    <hr>
+    <div>
+        @foreach (Event calendarEvent in Model)
+        {
+            <div style="margin: 30px;" class="row">
+                <a style="cursor: pointer; text-decoration: none;" class="btn btn-outline-light" onclick="location.href = '@Url.Action("Event", "CalendarEvent", new {identifier = calendarEvent.Id})'">
+                    <div>
+                        <p>Summary : @calendarEvent.Summary</p>
+                        <p>Description : @calendarEvent.Description</p>
+                        <p>Start Date Time: @(calendarEvent.Start.DateTime != null ? DateTime.ParseExact(calendarEvent.Start.DateTime, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture).ToString("dd-MMM-yyyy HH:mm") : "N/A") (@calendarEvent.Start.TimeZone)</p>
+                        <p>End Date Time: @(calendarEvent.End.DateTime != null ? DateTime.ParseExact(calendarEvent.End.DateTime, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture).ToString("dd-MMM-yyyy HH:mm") : "N/A") (@calendarEvent.End.TimeZone)</p>
+                    </div>
+                </a>
+                <a style="cursor: pointer; text-decoration: none; color: cornflowerblue;" onclick="location.href = '@Url.Action("UpdateEvent", "CalendarEvent", new {identifier = calendarEvent.Id})'">Edit</a>
+                <span style="margin-right: 20px; margin-left: 20px;">|</span>
+                <a style="cursor: pointer; text-decoration: none;color: cornflowerblue;" onclick="location.href = '@Url.Action("DeleteEvent", "CalendarEvent", new {identifier = calendarEvent.Id})'">Delete</a>
+            </div>
+        }
+    </div>
+    
+}
+else
+{
+    <div style="margin: 30px; font-size: 20px;">
+        No Events Found
+    </div>
+}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var toastEl = document.querySelector('.toast');
+        var toast = new bootstrap.Toast(toastEl, {
+            delay: 2000,
+            autohide: true
+        });
+        toastEl.classList.add('bg-success');
+
+        if (window.location.search.indexOf('status=deleted') !== -1) {
+                toastEl.querySelector('.toast-body').innerHTML = 'Event has been deleted.'; // set the message
+                toast.show();
+                window.location.replace('https://localhost:44379/CalendarEvent/AllEvents');
+        }
+        if (window.location.search.indexOf('status=created') !== -1) {
+            toastEl.querySelector('.toast-body').innerHTML = 'Event has been created.'; // set the message
+                toast.show();
+                window.location.replace('https://localhost:44379/CalendarEvent/AllEvents');
+        }
+        if (window.location.search.indexOf('status=updated') !== -1) {
+            toastEl.querySelector('.toast-body').innerHTML = 'Event has been updated.'; // set the message
+                toast.show();
+                window.location.replace('https://localhost:44379/CalendarEvent/AllEvents');
+        }
+    });
+
+</script>

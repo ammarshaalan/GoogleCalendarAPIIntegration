@@ -1,0 +1,46 @@
+﻿@using GoogleCalendarAPIIntegration.Models
+@model Event
+
+<div style="margin-top: 50px;">
+    <form method="post" action="UpdateEvent?identifier=@Model.Id">
+        <div class="row" style="margin:10px;">
+            <label for="Summary" class="col-sm-2">Summary:</label>
+            <input type="text" class="col-sm-9 form-control" name="Summary" value="@Model.Summary" autocomplete="off" />
+        </div>
+        <div class="row" style="margin:10px;">
+            <label for="Description" class="col-sm-2">Description:</label>
+            <input type="text" class="col-sm-9 form-control" name="Description" value="@Model.Description" autocomplete="off" />
+        </div>
+        <div class="row" style="margin:10px;">
+            <label for="Start.DateTime" class="col-sm-2">Start Date Time:</label>
+            <input type="datetime" class="col-sm-9 form-control" name="Start.DateTime" value="@Model.Start.DateTime" autocomplete="off" />
+        </div>
+        <div class="row" style="margin:10px;">
+            <label for="End.DateTime" class="col-sm-2">End Date Time:</label>
+            <input type="datetime" class="col-sm-9 form-control" name="End.DateTime" value="@Model.End.DateTime" autocomplete="off" />
+        </div>
+        <div class="row" style="margin:10px;">
+            <label for="reminderMinutes" class="col-sm-3">Reminder:</label>
+            <select name="reminderMinutes" class="col-sm-9 form-control">
+                <option value="0">None</option>
+                <option value="5">5 minutes before</option>
+                <option value="10">10 minutes before</option>
+                <option value="15">15 minutes before</option>
+                <option value="30">30 minutes before</option>
+                <option value="60">1 hour before</option>
+            </select>
+        </div>
+        <div class="row" style="margin:10px;">
+            <label for="reminderMethod" class="col-sm-3">Reminder Method:</label>
+            <select class="col-sm-9 form-control" name="reminderMethod">
+                <option value="">None</option>
+                <option value="email">Email</option>
+                <option value="popup">Popup</option>
+                <option value="email,popup">Both</option>
+            </select>
+        </div>
+        <div class="row col-sm-2" style="margin:10px;">
+            <input type="submit" value="Submit" class="btn btn-primary" />
+        </div>
+    </form>
+</div>

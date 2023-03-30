@@ -1,0 +1,53 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<div toast-container position-fixed style="
+     bottom: 60px;
+     right: 0;
+     position: fixed;
+     height: 80px;">
+    <div class="toast">
+        <div class="toast-body" style="font-size:1rem; color:aliceblue;">
+            Refresh token obtained successfully.
+        </div>
+    </div>
+</div>
+@if (!ViewBag.IsSignedIn)
+{
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <p>Learn about <a href="https://developers.google.com/calendar/api/guides/overview">Integration With the Google Calendar API</a>.</p>
+       <div class="col-md-12 my-3 text-center">
+            <button class="btn btn-primary" style="margin-top: 20px;" onclick="location.href = '@Url.Action("OauthRedirect", "Home")'">Google Login</button>
+       </div>
+   </div>
+}
+@if (ViewBag.IsSignedIn)
+{
+    <h2>Create New Event</h2>
+    <div class="row row-no-gutters">
+        <div class="col-sm-6">
+            @Html.Partial("~/Views/CalendarEvent/CreateEvent.cshtml")
+        </div>
+    </div>
+}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script>
+
+
+    if (window.location.search.indexOf('status=success') !== -1) {
+        $(document).ready(function () {
+            var toastEl = document.querySelector('.toast');
+            var toast = new bootstrap.Toast(toastEl, {
+                delay: 2000,
+                autohide: true
+            });
+            toastEl.classList.add('bg-success');
+            toast.show();
+            window.location.replace('https://localhost:44379');
+        });
+    }
+
+</script>
